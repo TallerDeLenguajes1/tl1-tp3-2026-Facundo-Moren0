@@ -6,6 +6,8 @@
 
 void MostrarPersonas(char *arrayNombres[],int cant);
 
+int BuscarNombre(char *arrayNombres[],int cant,char clave[]);
+
 int main(){
     char nombre[50];
     char *nombres[CANTIDAD];
@@ -20,6 +22,7 @@ int main(){
     }
     
     MostrarPersonas(nombres,CANTIDAD);
+    BuscarNombre(nombres,CANTIDAD,"facundo");
 
     return 0;
 }
@@ -32,4 +35,16 @@ void MostrarPersonas(char *arrayNombres[],int cant){
         printf("\n");
     }
     
+}
+
+int BuscarNombre(char *arrayNombres[],int cant,char clave[]){
+    
+    for (int i = 0; i < cant; i++){
+        
+        if(strstr(arrayNombres[i], clave) != NULL){
+            return i;
+        }
+    }
+    
+    return -1;
 }
