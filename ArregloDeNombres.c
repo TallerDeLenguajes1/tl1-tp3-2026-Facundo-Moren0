@@ -5,8 +5,8 @@
 #define CANTIDAD 5
 
 void MostrarPersonas(char *arrayNombres[],int cant);
-
-int BuscarNombre(char *arrayNombres[],int cant,char clave[]);
+void BuscaNombrePorId(char *arrayNombres[],int cant,int id);
+int BuscaNombrePorPalabra(char *arrayNombres[],int cant,char clave[]);
 
 int main(){
     char nombre[50];
@@ -22,7 +22,10 @@ int main(){
     }
     
     MostrarPersonas(nombres,CANTIDAD);
-    BuscarNombre(nombres,CANTIDAD,"facundo");
+
+    BuscaNombrePorId(nombres,CANTIDAD,3);
+
+    BuscaNombrePorPalabra(nombres,CANTIDAD,"facundo");
 
     return 0;
 }
@@ -37,7 +40,19 @@ void MostrarPersonas(char *arrayNombres[],int cant){
     
 }
 
-int BuscarNombre(char *arrayNombres[],int cant,char clave[]){
+void BuscaNombrePorId(char *arrayNombres[],int cant,int id){
+    
+    if(id >= cant || id < 0){
+        printf("No se encontró el valor buscado");
+    }else{
+        printf("%s",arrayNombres[id]);
+        printf("\n");
+    }
+    
+}
+
+
+int BuscaNombrePorPalabra(char *arrayNombres[],int cant,char clave[]){
     
     for (int i = 0; i < cant; i++){
         
