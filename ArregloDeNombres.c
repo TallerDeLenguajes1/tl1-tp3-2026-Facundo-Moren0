@@ -20,12 +20,55 @@ int main(){
         nombres[i] = (char*)malloc(strlen(nombre) + 1);
         strcpy(nombres[i],nombre);
     }
-    
+
     MostrarPersonas(nombres,CANTIDAD);
+    printf("\n\n");
 
-    BuscaNombrePorId(nombres,CANTIDAD,3);
 
-    BuscaNombrePorPalabra(nombres,CANTIDAD,"facundo");
+    int opcion;
+
+    do {
+        printf("\n");
+        printf("================================\n");
+        printf("       MENU DE CONSULTA         \n");
+        printf("================================\n");
+        printf("  1. Buscar por ID              \n");
+        printf("  2. Buscar por palabra clave   \n");
+        printf("  0. Salir                      \n");
+        printf("================================\n");
+        printf("Ingrese una opcion: ");
+        scanf("%d", &opcion);
+        printf("\n");
+
+        if(opcion == 1){
+
+            int id;
+            printf("Ingrese el ID a buscar (0 a %d): ", CANTIDAD - 1);
+            scanf("%d", &id);
+            BuscaNombrePorId(nombres, CANTIDAD, id);
+        } else if(opcion == 2){
+
+            char buff[50];
+            printf("Ingrese la palabra clave: ");
+            scanf("%s", buff);
+            int resultado = BuscaNombrePorPalabra(nombres, CANTIDAD, buff);
+            if(resultado == -1){
+                printf(">>> No se encontro el valor buscado\n");
+            } else {
+                printf(">>> Nombre encontrado: %s\n", nombres[resultado]);
+            }
+
+        } else if(opcion != 0){
+            printf(">>> Opcion invalida. Intente nuevamente.\n");
+        }
+
+    } while(opcion != 0);
+
+    printf("\n>>> Fin del programa...\n");
+
+    for(int i = 0; i < CANTIDAD; i++){
+        free(nombres[i]);
+    }
 
     return 0;
 }
@@ -45,7 +88,7 @@ void BuscaNombrePorId(char *arrayNombres[],int cant,int id){
     if(id >= cant || id < 0){
         printf("No se encontró el valor buscado");
     }else{
-        printf("%s",arrayNombres[id]);
+        printf("La persona con id(%d) es: %s",id,arrayNombres[id]);
         printf("\n");
     }
     
