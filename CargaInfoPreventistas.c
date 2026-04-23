@@ -5,19 +5,22 @@
 
 
 typedef struct  {
- int ProductoID; //Numerado en ciclo iterativo
- int Cantidad; // entre 1 y 10
- char *TipoProducto; // Algún valor del arreglo TiposProductos
- float PrecioUnitario; // entre 10 - 100
+ int ProductoID;
+ int Cantidad;
+ char *TipoProducto;
+ float PrecioUnitario;
 }Producto;
 
 typedef struct  {
-int ClienteID; // Numerado en el ciclo iterativo
-char *NombreCliente; // Ingresado por usuario
-int CantidadProductosAPedir; // (aleatorio entre 1 y 5)
-Producto *Productos; //El tamaño de este arreglo depende de la variable
+int ClienteID;
+char *NombreCliente;
+int CantidadProductosAPedir;
+Producto *Productos;
 }Cliente;
 
+float CostoTotalProducto(Producto *producto);
+
+void MostrarClientes(Cliente *pClientes, int cantClientes);
 
 int main(){
 
@@ -36,19 +39,24 @@ int main(){
         //(pClientes + i)->ClienteID = i;
         pClientes[i].ClienteID = i;
 
-        //Cragar nombre del cliente
+        //Cargar nombre del cliente
         char nombre[50];
         printf("Ingresar nombre: ");
         scanf("%s",nombre);
+        getchar();
         printf("\n\n");
         pClientes[i].NombreCliente = (char*)malloc(strlen(nombre) + 1);
         strcpy(pClientes[i].NombreCliente,nombre);
 
         pClientes[i].CantidadProductosAPedir = (rand() % 5) + 1;
 
-        //Cargar cantidad de productos pro cliente
+        //Cargar cantidad de productos por cliente
+        
+        /*
         printf("Cuantos productos solicito?: ");
-        scanf("%d", &cantProductos);
+        scanf("%d", &cantProductos);*/
+
+        cantProductos = pClientes[i].CantidadProductosAPedir;
 
         Producto *pProducto = malloc(cantProductos * sizeof(Producto));
 
@@ -63,7 +71,60 @@ int main(){
         
 
     }
-    
+
+    //Costo total del segundo producto solicitado del cliente 4
+    //CostoTotalProducto((pClientes + 3) -> Productos + 1);
+
+    //Costo total del primer producto solicitado del cliente 1
+    CostoTotalProducto(pClientes -> Productos);
+
+
+    MostrarClientes(pClientes, cantClientes);
+
+    for (int i = 0; i < cantClientes; i++){
+        free(pClientes[i].NombreCliente);
+        free(pClientes[i].Productos);
+    }
+    free(pClientes);
 
     return 0;
+}
+
+float CostoTotalProducto(Producto *producto){
+    float costoTotal = 0;
+    costoTotal = (producto->Cantidad * producto->PrecioUnitario);
+    return costoTotal;
+}
+
+void MostrarClientes(Cliente *pClientes, int cantClientes){
+
+    for (int i = 0; i < cantClientes; i++){
+
+        float totalCliente = 0;
+
+        printf("================================\n");
+        printf(" Cliente ID : %d\n", pClientes[i].ClienteID);
+        printf(" Nombre     : %s\n", pClientes[i].NombreCliente);
+        printf(" Productos  : %d\n", pClientes[i].CantidadProductosAPedir);
+        printf("--------------------------------\n");
+        printf(" %-5s %-15s %-10s %-10s %-10s\n", "ID", "Tipo", "Cantidad", "P.Unit", "Subtotal");
+        printf("--------------------------------\n");
+
+        for (int j = 0; j < pClientes[i].CantidadProductosAPedir; j++){
+            Producto *p = &pClientes[i].Productos[j];
+            float subtotal = CostoTotalProducto(p);
+            totalCliente += subtotal;
+            printf(" %-5d %-15s %-10d %-10.2f %-10.2f\n",
+                p->ProductoID,
+                p->TipoProducto,
+                p->Cantidad,
+                p->PrecioUnitario,
+                subtotal
+            );
+        }
+
+        printf("--------------------------------\n");
+        printf(" TOTAL A PAGAR: $%.2f\n", totalCliente);
+        printf("================================\n\n");
+    }
 }
